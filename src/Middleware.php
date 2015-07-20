@@ -11,7 +11,7 @@ class Middleware {
 	protected $app;
 	protected $lastAction;
 
-	public function __construct($app, array $defaultPaths = null, $lastAction) {
+	public function __construct($app, array $defaultPaths = null, $lastAction = null) {
 		$this->app = $app;
 
 		if( ! is_null($defaultPaths)) {

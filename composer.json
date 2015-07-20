@@ -1,0 +1,26 @@
+{
+    "name": "marcoazn89/slim-booboo-whoops",
+    "license": "MIT",
+    "description": "Slim + Booboo + Whoops integration for Slim3.0 framework",
+    "keywords": ["library", "error", "handling", "exception", "booboo", "whoops", "slim", "php"],
+    "homepage": "https://github.com/marcoazn89/slim-booboo",
+    "authors": [
+        {
+            "name": "Marco A. Chang",
+            "homepage": "https://github.com/marcoazn89",
+            "role": "Software Engineer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "slim/slim": "3.x-dev",
+        "marcoazn89/http-wrapper": "dev-dev",
+        "marcoazn89/booboo": "dev-master",
+        "filp/whoops": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "SlimBoobooWhoops\\": "src/"
+        }
+    }
+}

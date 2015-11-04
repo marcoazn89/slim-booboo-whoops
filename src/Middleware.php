@@ -11,7 +11,7 @@ class Middleware {
 	protected $app;
 	protected $lastAction;
 
-	public function __construct($app, array $defaultPaths = null, $lastAction = null) {
+	public function __construct($app, array $defaultPaths = null, \Psr\Log\LoggerInterface $logger = null) {
 		$this->app = $app;
 
 		if( ! is_null($defaultPaths)) {
@@ -19,8 +19,6 @@ class Middleware {
 				BooBoo::defaultErrorPath($format, $path);
 			}
 		}
-
-		$this->lastAction = $lastAction;
 	}
 
 	public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response, $next) {
@@ -58,6 +56,11 @@ class Middleware {
     $whoops = new \Whoops\Run;
     $whoops->pushHandler($prettyPageHandler);
     $whoops->pushHandler($jsonResponseHandler);
+    if(!empty($logger = $this->logger)) {
+      $whoops->pushHandler(function ($exception, $inspector, $run) use($logger) {
+        $logger->error($exception->getMessage());
+      });
+    }
 		$whoops->register();
 
 		// Overwrite the errorHandler

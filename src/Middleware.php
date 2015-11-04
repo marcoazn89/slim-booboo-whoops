@@ -10,9 +10,11 @@ class Middleware {
 
 	protected $app;
 	protected $lastAction;
+  protected $logger;
 
 	public function __construct($app, array $defaultPaths = null, \Psr\Log\LoggerInterface $logger = null) {
 		$this->app = $app;
+    $this->logger = $logger;
 
 		if( ! is_null($defaultPaths)) {
 			foreach($defaultPaths as $format => $path) {

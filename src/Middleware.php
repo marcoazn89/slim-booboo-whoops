@@ -28,41 +28,41 @@ class Middleware {
 
 		$settings  = $container['settings'];
 
-    // Enable PrettyPageHandler with editor options
-    $prettyPageHandler = new PrettyPageHandler();
+        // Enable PrettyPageHandler with editor options
+        $prettyPageHandler = new PrettyPageHandler();
 
-    // Enable JsonResponseHandler when request is AJAX
-    $jsonResponseHandler = new JsonResponseHandler();
-    $jsonResponseHandler->onlyForAjaxRequests(true);
+        // Enable JsonResponseHandler when request is AJAX
+        $jsonResponseHandler = new JsonResponseHandler();
+        $jsonResponseHandler->onlyForAjaxRequests(true);
 
-    // Add more information to the PrettyPageHandler
-    $prettyPageHandler->addDataTable('Slim Application', [
-     'Application Class' => get_class($this->app),
-     'Script Name'       => $this->app->environment->get('SCRIPT_NAME'),
-     'Request URI'       => $this->app->environment->get('PATH_INFO') ?: '<none>',
-    ]);
+        // Add more information to the PrettyPageHandler
+        $prettyPageHandler->addDataTable('Slim Application', [
+         'Application Class' => get_class($this->app),
+         'Script Name'       => $this->app->environment->get('SCRIPT_NAME'),
+         'Request URI'       => $this->app->environment->get('PATH_INFO') ?: '<none>',
+        ]);
 
-    $prettyPageHandler->addDataTable('Slim Application (Request)', array(
-      'Accept Charset'  => $this->app->request->getHeader('ACCEPT_CHARSET') ?: '<none>',
-      'Content Charset' => $this->app->request->getContentCharset() ?: '<none>',
-      'Path'            => $this->app->request->getUri()->getPath(),
-      'Query String'    => $this->app->request->getUri()->getQuery() ?: '<none>',
-      'HTTP Method'     => $this->app->request->getMethod(),
-      'Base URL'        => (string) $this->app->request->getUri(),
-      'Scheme'          => $this->app->request->getUri()->getScheme(),
-      'Port'            => $this->app->request->getUri()->getPort(),
-      'Host'            => $this->app->request->getUri()->getHost(),
-    ));
+        $prettyPageHandler->addDataTable('Slim Application (Request)', array(
+          'Accept Charset'  => $this->app->request->getHeader('ACCEPT_CHARSET') ?: '<none>',
+          'Content Charset' => $this->app->request->getContentCharset() ?: '<none>',
+          'Path'            => $this->app->request->getUri()->getPath(),
+          'Query String'    => $this->app->request->getUri()->getQuery() ?: '<none>',
+          'HTTP Method'     => $this->app->request->getMethod(),
+          'Base URL'        => (string) $this->app->request->getUri(),
+          'Scheme'          => $this->app->request->getUri()->getScheme(),
+          'Port'            => $this->app->request->getUri()->getPort(),
+          'Host'            => $this->app->request->getUri()->getHost(),
+        ));
 
-    // Set Whoops to default exception handler
-    $whoops = new \Whoops\Run;
-    $whoops->pushHandler($prettyPageHandler);
-    $whoops->pushHandler($jsonResponseHandler);
-    if(!empty($logger = $this->logger)) {
-      $whoops->pushHandler(function ($exception, $inspector, $run) use($logger) {
-        $logger->error($exception->getMessage());
-      });
-    }
+        // Set Whoops to default exception handler
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler($prettyPageHandler);
+        $whoops->pushHandler($jsonResponseHandler);
+        if(!empty($logger = $this->logger)) {
+          $whoops->pushHandler(function ($exception, $inspector, $run) use($logger) {
+            $logger->error($exception->getMessage());
+          });
+        }
 		$whoops->register();
 
 		// Overwrite the errorHandler
